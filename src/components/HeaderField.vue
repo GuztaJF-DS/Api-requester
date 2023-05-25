@@ -13,10 +13,15 @@ console.log(header.value)
 
 const emit = defineEmits(['update:value']);
 
-function UpdateHeader(event: string, columnIndex: number, index:number){
+function updateHeader(event: string, columnIndex: number, index:number){
   header.value[columnIndex][index]= event;
   emit('update:value', header)
 }
+
+function addHeader() {
+  header.value.push(['',''])
+}
+
 </script>
 
 <template>
@@ -25,18 +30,18 @@ function UpdateHeader(event: string, columnIndex: number, index:number){
     <div class="header-input" v-for="(head, index) in header" :key="index">
       <input 
         v-bind:value="head[0]"
-        v-on:input="UpdateHeader(($event.target as HTMLInputElement)?.value, index, 0)"
+        v-on:input="updateHeader(($event.target as HTMLInputElement)?.value, index, 0)"
         type="text"
         placeholder="Header"
       />
       <input 
         v-bind:value="head[1]"
-        v-on:input="UpdateHeader(($event.target as HTMLInputElement)?.value, index, 1)"
+        v-on:input="updateHeader(($event.target as HTMLInputElement)?.value, index, 1)"
         type="text"
         placeholder="value"
       />
     </div>
-    <button @click="$emit('update:value', 'testValue')">Make the Request</button>
+    <button @click="addHeader()">Add Header</button>
   </div>
 </template>
 
