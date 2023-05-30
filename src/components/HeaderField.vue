@@ -9,17 +9,26 @@ const props = defineProps({
 });
 
 const { header } = toRefs(props);
-console.log(header.value)
 
 const emit = defineEmits(['update:value']);
 
 function updateHeader(event: string, columnIndex: number, index:number){
-  header.value[columnIndex][index]= event;
+  header.value[columnIndex][index] = event;
   emit('update:value', header)
 }
 
 function addHeader() {
   header.value.push(['',''])
+}
+
+function removeHeader(index: number){
+  if(index!==0){
+    header.value.splice(index, index);
+  }
+  else{
+    header.value.shift();
+  }
+  emit('update:value', header)
 }
 
 </script>
@@ -40,6 +49,7 @@ function addHeader() {
         type="text"
         placeholder="value"
       />
+      <button @click="removeHeader(index)">X</button>
     </div>
     <button @click="addHeader()">Add Header</button>
   </div>
