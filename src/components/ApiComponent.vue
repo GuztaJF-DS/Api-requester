@@ -12,8 +12,8 @@ interface IFormsData {
 }
 
 const formsData: Ref<IFormsData> = ref({
-  url: '',
-  method: '',
+  url: 'https://catfact.ninja/fact',
+  method: 'get',
   header: [['Content-Type','application/json']],
   params: ''
 });
@@ -52,7 +52,7 @@ watch(formsData.value, ({ header }) => {
         <input v-model="formsData.url" placeholder="url" />
       </div>
       <HeaderField v-bind:header="formsData.header" v-on:update:value="formsData.header = $event" />
-      <button @click="Request">Make the Request</button>
+      <button class="request-button" @click="Request">Make the Request</button>
     </div>
   </div>
   <h3>
@@ -70,7 +70,6 @@ h1 {
 h3 {
   font-size: 1.2rem;
 }
-
 .fields-area {
   width: 50%;
 }
@@ -93,14 +92,14 @@ h3 {
   background-color: transparent;
   border: none;
   outline: none;
-  border-bottom: rgb(124, 124, 124) solid 1.2px;
+  border-bottom: #666666 solid 1.2px;
   border-bottom-left-radius: 7px;
   border-bottom-right-radius: 5px;
-  color: rgb(192, 192, 192);
+  color: #C0C0C0;
 
   :focus {
     outline: none;
-    color: rgb(192, 192, 192);
+    color: #C0C0C0;
   }
 
   option {
@@ -111,11 +110,11 @@ h3 {
 input {
   background-color: transparent;
   border: none;
-  border-bottom: rgb(124, 124, 124) solid 1.2px;
+  border-bottom: #666666 solid 1.2px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 7px;
   font-size: 19px;
-  color: rgb(168, 168, 168);
+  color: #999999;
   margin-bottom: 5px;
 
   :focus {
@@ -130,4 +129,15 @@ input {
 .fields {
   display: flex;
   flex-direction: column;
-}</style>
+}
+
+.request-button {
+  margin-top: 20px;
+  background-color: #00bd7e;
+  color:#181818;
+  font-weight: 600;
+  border: #008b5d solid 1.2px;
+  border-radius: 5px;
+}
+
+</style>

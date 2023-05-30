@@ -49,19 +49,24 @@ function removeHeader(index: number){
         type="text"
         placeholder="value"
       />
-      <button @click="removeHeader(index)">X</button>
+      <button class="remove-button" @click="removeHeader(index)">X</button>
     </div>
     <button @click="addHeader()">Add Header</button>
   </div>
 </template>
 
 <style scoped lang="scss">
+  h2 {
+    color:#acacac;
+  }
+
   input {
     background-color: transparent;
     border-radius: 2px;
-    border: rgb(124, 124, 124) solid 1.2px;
+    border: #666666 solid 1.2px;
     font-size: 19px;
-    color: rgb(168, 168, 168);
+    color: #999999;
+    height: 28px;
     margin-bottom: 5px;
     :focus{
       outline: none;
@@ -70,4 +75,20 @@ function removeHeader(index: number){
   .header-input{
     display: flex;
   }
+  
+  button {
+    background-color: transparent;// #00CC99
+    color: #FFFFFF;
+    border: #666666 solid 1.2px;
+    border-radius: 5px;
+    padding: 3px 8px;
+  }
+  .remove-button{
+    border-top-left-radius: 0px;
+    height: 28px;
+    background-color: #C91C1C;
+    border-color: #ca4242;
+    padding: 5px;
+  }
+
 </style>
