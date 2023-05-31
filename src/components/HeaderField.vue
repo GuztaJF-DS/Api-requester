@@ -67,6 +67,7 @@ function removeHeader(index: number){
     font-size: 19px;
     color: #999999;
     height: 28px;
+    width: 50%;
     margin-bottom: 5px;
     :focus{
       outline: none;

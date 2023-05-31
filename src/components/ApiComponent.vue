@@ -24,7 +24,7 @@ async function Request() {
       url: formsData.value.url,
       method: formsData.value.method
     });
-    apiData.value = res.data;
+    apiData.value = JSON.stringify(res.data, undefined, 4);
   }
   catch (e) {
     console.error(e)
@@ -37,27 +37,28 @@ watch(formsData.value, ({ header }) => {
 </script>
 
 <template>
-  <div class="fields-area">
-    <h1 class="green">Api Requester</h1>
-    <div class="fields">
-      <div class="url-field">
-        <select v-model="formsData.method" class="method-select">
-          <option disabled value="">Method</option>
-          <option style="color:#a903fc;" value="get">GET</option>
-          <option style="color:#23db02;" value="post">POST</option>
-          <option style="color:#e6d200;" value="put">PUT</option>
-          <option style="color:#e68200;" value="patch">PATCH</option>
-          <option style="color:#db0d4e;" value="delete">DELETE</option>
-        </select>
-        <input v-model="formsData.url" placeholder="url" />
+  <div class="api-container">
+    <div class="fields-area">
+      <h1 class="green">Api Requester</h1>
+      <div class="fields">
+        <div class="url-field">
+          <select v-model="formsData.method" class="method-select">
+            <option disabled value="">Method</option>
+            <option style="color:#a903fc;" value="get">GET</option>
+            <option style="color:#23db02;" value="post">POST</option>
+            <option style="color:#e6d200;" value="put">PUT</option>
+            <option style="color:#e68200;" value="patch">PATCH</option>
+            <option style="color:#db0d4e;" value="delete">DELETE</option>
+          </select>
+          <input v-model="formsData.url" placeholder="url" />
+        </div>
+        <HeaderField v-bind:header="formsData.header" v-on:update:value="formsData.header = $event" />
+        <button class="request-button" @click="Request">Make the Request</button>
       </div>
-      <HeaderField v-bind:header="formsData.header" v-on:update:value="formsData.header = $event" />
-      <button class="request-button" @click="Request">Make the Request</button>
     </div>
+    <textarea v-model="apiData" class="api-data">
+    </textarea>
   </div>
-  <h3>
-    {{ apiData }}
-  </h3>
 </template>
 
 <style scoped lang="scss">
@@ -70,8 +71,26 @@ h1 {
 h3 {
   font-size: 1.2rem;
 }
+  
+textarea {
+  background-color: #181818;
+  border-color: transparent;
+  color: white;
+  resize: none;
+}
+
+.api-container{
+  display: flex;
+  justify-content: space-between;
+  height: 90vh;
+}
+
 .fields-area {
-  width: 50%;
+  width: 40%;
+}
+
+.api-data{
+  width: 45%;
 }
 
 .url-field {
@@ -137,6 +156,8 @@ input {
   color:#181818;
   font-weight: 600;
   border: #008b5d solid 1.2px;
+  padding: 3px;
+  font-size: 14px;
   border-radius: 5px;
 }
 
