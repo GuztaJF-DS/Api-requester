@@ -34,6 +34,11 @@ async function Request() {
 watch(formsData.value, ({ header }) => {
   console.log('header',header)
 })
+const windowValue = ref(false);
+
+function updateWindow(val:boolean){
+  windowValue.value=val;
+}
 </script>
 
 <template>
@@ -52,7 +57,30 @@ watch(formsData.value, ({ header }) => {
           </select>
           <input v-model="formsData.url" placeholder="url" />
         </div>
-        <HeaderField v-bind:header="formsData.header" v-on:update:value="formsData.header = $event" />
+        <div class="button-div">
+          <button 
+            class="window-button" 
+            :style="[windowValue ? { 'background': '#11384c' } : { 'background': '#181818' }]"
+            @click="updateWindow(true);"
+          >
+           Header
+          </button>
+          <button 
+            class="window-button"
+            :style="[!windowValue ? { 'background': '#11384c' } : { 'background': '#181818' }] "
+            @click=" updateWindow(false);"
+          >
+            Params
+          </button>
+        </div>
+        <div class="window-div">
+          <div v-if=" windowValue ">
+            <HeaderField v-bind:header=" formsData.header " v-on:update:value=" formsData.header = $event " />
+          </div>
+          <div v-else>
+            <h2>Param Component</h2>
+          </div>
+        </div>
         <button class="request-button" @click="Request">Make the Request</button>
       </div>
     </div>
@@ -73,9 +101,9 @@ h3 {
 }
   
 textarea {
-  background-color: #181818;
+  background-color: #4d4d4d;
   border-color: transparent;
-  color: white;
+  color: #dfdfdf;
   resize: none;
 }
 
@@ -83,10 +111,11 @@ textarea {
   display: flex;
   justify-content: space-between;
   height: 90vh;
+  
 }
 
 .fields-area {
-  width: 40%;
+  width: 45%;
 }
 
 .api-data{
@@ -105,6 +134,48 @@ textarea {
   >input {
     width: 100%;
   }
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+
+  ::-webkit-scrollbar {
+    width: 2px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent; 
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #666666;
+    outline: 1px solid #666666;
+  }
+}
+
+.button-div{
+  display: flex;
+  margin-top: 15px;
+  :first-child{
+    border-top-left-radius: 5px;
+  }
+  :last-child{
+    border-top-right-radius: 5px;
+  }
+}
+
+.window-div{
+  min-height: 40vh;
+  max-height: 60vh;
+  overflow-y: auto;
+  border: #666666 1px solid;
+}
+
+
+.window-button{
+  width: 20%;
+  background-color: transparent;
+  color:#C0C0C0;
+  border: #666666 1px solid;
 }
 
 .method-select {
@@ -145,10 +216,6 @@ input {
   text-align: left;
 }
 
-.fields {
-  display: flex;
-  flex-direction: column;
-}
 
 .request-button {
   margin-top: 20px;

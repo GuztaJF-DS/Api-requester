@@ -34,8 +34,10 @@ function removeHeader(index: number){
 </script>
 
 <template>
-  <div>
-    <h2>Header Component</h2>
+  <div class="main-container">
+    <h2>Header Component
+      <button @click="addHeader()">Add Header</button>
+    </h2>
     <div class="header-input" v-for="(head, index) in header" :key="index">
       <input 
         v-bind:value="head[0]"
@@ -51,13 +53,23 @@ function removeHeader(index: number){
       />
       <button class="remove-button" @click="removeHeader(index)">X</button>
     </div>
-    <button @click="addHeader()">Add Header</button>
   </div>
 </template>
 
 <style scoped lang="scss">
+  .main-container{
+    padding: 0px 5px;
+  }
+
   h2 {
     color:#acacac;
+    position: sticky;
+    top: 0;
+    background-color: #181818;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 5px;
   }
 
   input {
@@ -69,13 +81,16 @@ function removeHeader(index: number){
     height: 28px;
     width: 50%;
     margin-bottom: 5px;
+    margin-right: 3px;
     :focus{
       outline: none;
     }
   }
   .header-input{
     display: flex;
+    margin-top: 5px;
   }
+
   
   button {
     background-color: transparent;// #00CC99
@@ -83,12 +98,13 @@ function removeHeader(index: number){
     border: #666666 solid 1.2px;
     border-radius: 5px;
     padding: 3px 8px;
+    max-width: 100px;
   }
   .remove-button{
     border-top-left-radius: 0px;
     height: 28px;
-    background-color: #C91C1C;
-    border-color: #ca4242;
+    background-color: #BD2500;
+    border-color: #701600;
     padding: 5px;
   }
 
