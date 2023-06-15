@@ -1,8 +1,9 @@
 <script async setup lang="ts">
 import axios from 'axios';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import type { Ref } from 'vue'
 import HeaderField from './HeaderField.vue';
+import ParamsField from './ParamsField.vue';
 
 interface IFormsData {
   url: string;
@@ -15,15 +16,18 @@ const formsData: Ref<IFormsData> = ref({
   url: 'https://catfact.ninja/fact',
   method: 'get',
   header: [['Content-Type','application/json']],
-  params: ''
+  params: '{}'
 });
 const apiData = ref();
 async function Request() {
   try {
-    const res = await axios({
+    const a = {
       url: formsData.value.url,
-      method: formsData.value.method
-    });
+      method: formsData.value.method,
+      data: JSON.parse(formsData.value.params),
+    }
+    console.log(a);
+    const res = await axios(a);
     apiData.value = JSON.stringify(res.data, undefined, 4);
   }
   catch (e) {
@@ -31,9 +35,9 @@ async function Request() {
   }
 }
 
-watch(formsData.value, ({ header }) => {
-  console.log('header',header)
-})
+// watch(formsData.value, ({header}) => {
+//   console.log('header', header)
+// })
 const windowValue = ref(false);
 
 function updateWindow(val:boolean){
@@ -58,33 +62,33 @@ function updateWindow(val:boolean){
           <input v-model="formsData.url" placeholder="url" />
         </div>
         <div class="button-div">
+            <button 
+              class="window-button"
+              :style="[!windowValue ? { 'background': '#114c31' } : { 'background': '#181818' }]"
+              @click="updateWindow(false);"
+            >
+              Params
+            </button>
           <button 
             class="window-button" 
-            :style="[windowValue ? { 'background': '#11384c' } : { 'background': '#181818' }]"
+            :style="[windowValue ? { 'background': '#114c31' } : { 'background': '#181818' }]"
             @click="updateWindow(true);"
           >
            Header
           </button>
-          <button 
-            class="window-button"
-            :style="[!windowValue ? { 'background': '#11384c' } : { 'background': '#181818' }] "
-            @click=" updateWindow(false);"
-          >
-            Params
-          </button>
         </div>
         <div class="window-div">
           <div v-if=" windowValue ">
-            <HeaderField v-bind:header=" formsData.header " v-on:update:value=" formsData.header = $event " />
+            <HeaderField v-bind:header=" formsData.header " v-on:update:value="formsData.header = $event" />
           </div>
           <div v-else>
-            <h2>Param Component</h2>
+            <ParamsField v-bind:params=" formsData.params " v-on:update:value=" formsData.params = $event" />
           </div>
         </div>
         <button class="request-button" @click="Request">Make the Request</button>
       </div>
     </div>
-    <textarea v-model="apiData" class="api-data">
+    <textarea v-model="apiData" class="api-data-textarea">
     </textarea>
   </div>
 </template>
@@ -118,7 +122,7 @@ textarea {
   width: 45%;
 }
 
-.api-data{
+.api-data-textarea{
   width: 45%;
 }
 
