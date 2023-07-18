@@ -18,13 +18,15 @@ const formsData: Ref<IFormsData> = ref({
   header: [['Content-Type','application/json']],
   params: '{}'
 });
+const ErrorData = ref(); 
 const apiData = ref();
 async function Request() {
-  const headers: { [key: string]: string } = {};
-  formsData.value.header.forEach(([key, value]) => {
-    headers[key] = value;
-  });
   try {
+    const headers: { [key: string]: string } = {};
+    formsData.value.header.forEach(([key, value]) => {
+      headers[key] = value;
+    });
+    ErrorData.value = '';
     const requestParams = {
       url: formsData.value.url,
       method: formsData.value.method,
@@ -36,6 +38,7 @@ async function Request() {
   }
   catch (e) {
     console.error(e)
+    ErrorData.value = e;
   }
 }
 
@@ -90,6 +93,7 @@ function updateWindow(val:boolean){
           </div>
         </div>
         <button class="request-button" @click="Request">Make the Request</button>
+        {{ ErrorData }}
       </div>
     </div>
     <textarea v-model="apiData" class="api-data-textarea">
