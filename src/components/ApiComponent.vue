@@ -15,10 +15,10 @@ interface IFormsData {
 const formsData: Ref<IFormsData> = ref({
   url: 'https://catfact.ninja/fact',
   method: 'get',
-  header: [['Content-Type','application/json']],
+  header: [['Content-Type', 'application/json']],
   params: '{}'
 });
-const ErrorData = ref(); 
+const ErrorData = ref();
 const apiData = ref();
 async function Request() {
   try {
@@ -46,13 +46,31 @@ async function Request() {
 //   console.log('header', header)
 // })
 const windowValue = ref(false);
-
-function updateWindow(val:boolean){
-  windowValue.value=val;
-}
+const displaySideBar = ref(true);
+const myApiOptions = [{name:'item1'}, {name:'item2'}];
 </script>
 
 <template>
+  <button class="display-button" @click = "displaySideBar = !displaySideBar">
+    My APIs {{ displaySideBar ? '<':'>' }}
+  </button>
+  <ul 
+    :style="[
+      !displaySideBar 
+      ? { 'width': '0%', 'padding': '0px', 'padding-top' : '25px' }
+      : { 'width': '220px', 'padding': '11px', 'padding-top': '25px' }
+    ]"
+    class="api-side-bar"
+  >
+  <li 
+    v-for="(item, index) in myApiOptions"
+    :key="index"
+    @click="console.log('item.name')"
+
+  >
+    {{ item.name }}
+  </li>
+  </ul>
   <div class="api-container">
     <div class="fields-area">
       <h1 class="green">Api Requester</h1>
@@ -69,27 +87,22 @@ function updateWindow(val:boolean){
           <input v-model="formsData.url" placeholder="url" />
         </div>
         <div class="button-div">
-            <button 
-              class="window-button"
-              :style="[!windowValue ? { 'background': '#114c31' } : { 'background': '#181818' }]"
-              @click="updateWindow(false);"
-            >
-              Params
-            </button>
-          <button 
-            class="window-button" 
-            :style="[windowValue ? { 'background': '#114c31' } : { 'background': '#181818' }]"
-            @click="updateWindow(true);"
-          >
-           Header
+          <button class="window-button"
+            :style="[!windowValue ? { 'background': '#114c31' } : { 'background': '#181818' }]"
+            @click="windowValue = false;">
+            Params
+          </button>
+          <button class="window-button" :style="[windowValue ? { 'background': '#114c31' } : { 'background': '#181818' }]"
+            @click="windowValue = true;">
+            Header
           </button>
         </div>
         <div class="window-div">
-          <div v-if=" windowValue ">
-            <HeaderField v-bind:header=" formsData.header " v-on:update:value="formsData.header = $event" />
+          <div v-if="windowValue">
+            <HeaderField v-bind:header="formsData.header" v-on:update:value="formsData.header = $event" />
           </div>
           <div v-else>
-            <ParamsField v-bind:params=" formsData.params " v-on:update:value=" formsData.params = $event" />
+            <ParamsField v-bind:params="formsData.params" v-on:update:value=" formsData.params = $event" />
           </div>
         </div>
         <button class="request-button" @click="Request">Make the Request</button>
@@ -111,7 +124,7 @@ h1 {
 h3 {
   font-size: 1.2rem;
 }
-  
+
 textarea {
   background-color: #4d4d4d;
   border-color: transparent;
@@ -119,19 +132,43 @@ textarea {
   resize: none;
 }
 
-.api-container{
+.api-side-bar{
+  background-color: #008b5d;
+  position: absolute;
+  overflow: hidden;
+  height: 100vh;
+  z-index: 5;
+  transition: 0.4s width;
+  margin: 0;
+}
+
+.display-button{
+  position: absolute;
+  background-color: transparent;
+  border:#008b5d 1px solid;
+  border-radius: 5px;
+  color:white;
+  z-index: 6;
+  margin: 5px;
+}
+
+.api-container {
   display: flex;
   justify-content: space-between;
   height: 90vh;
-  
+  margin: 0 auto;
+  max-width: 1280px;
+  padding: 2rem;
 }
 
 .fields-area {
   width: 45%;
 }
 
-.api-data-textarea{
+.api-data-textarea {
   width: 45%;
+  margin-top: 2.5%;
+  height: 100%;
 }
 
 .url-field {
@@ -155,27 +192,31 @@ textarea {
   ::-webkit-scrollbar {
     width: 2px;
   }
+
   ::-webkit-scrollbar-track {
-    background: transparent; 
+    background: transparent;
   }
+
   ::-webkit-scrollbar-thumb {
     background-color: #666666;
     outline: 1px solid #666666;
   }
 }
 
-.button-div{
+.button-div {
   display: flex;
   margin-top: 15px;
-  :first-child{
+
+  :first-child {
     border-top-left-radius: 5px;
   }
-  :last-child{
+
+  :last-child {
     border-top-right-radius: 5px;
   }
 }
 
-.window-div{
+.window-div {
   min-height: 40vh;
   max-height: 60vh;
   overflow-y: auto;
@@ -183,10 +224,10 @@ textarea {
 }
 
 
-.window-button{
+.window-button {
   width: 20%;
   background-color: transparent;
-  color:#C0C0C0;
+  color: #C0C0C0;
   border: #666666 1px solid;
 }
 
@@ -232,12 +273,11 @@ input {
 .request-button {
   margin-top: 20px;
   background-color: #00bd7e;
-  color:#181818;
+  color: #181818;
   font-weight: 600;
   border: #008b5d solid 1.2px;
   padding: 3px;
   font-size: 14px;
   border-radius: 5px;
 }
-
 </style>
