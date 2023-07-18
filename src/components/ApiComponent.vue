@@ -20,14 +20,18 @@ const formsData: Ref<IFormsData> = ref({
 });
 const apiData = ref();
 async function Request() {
+  const headers: { [key: string]: string } = {};
+  formsData.value.header.forEach(([key, value]) => {
+    headers[key] = value;
+  });
   try {
-    const a = {
+    const requestParams = {
       url: formsData.value.url,
       method: formsData.value.method,
+      headers: headers,
       data: JSON.parse(formsData.value.params),
     }
-    console.log(a);
-    const res = await axios(a);
+    const res = await axios(requestParams);
     apiData.value = JSON.stringify(res.data, undefined, 4);
   }
   catch (e) {
