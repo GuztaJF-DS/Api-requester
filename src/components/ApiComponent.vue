@@ -44,7 +44,7 @@ async function Request() {
   }
 }
 const windowValue = ref(false);
-const displaySideBar = ref(true);
+const displaySideBar = ref(false);
 const ulList = ref();
 const myApiOptions = MyApi;
 
@@ -65,7 +65,7 @@ function updateSideBar() {
   <ul ref="ulList" @blur="displaySideBar = false" tabindex="0" :style="[
     !displaySideBar
       ? { 'width': '0%' }
-      : { 'width': '220px' }
+      : { 'width': '220px', 'filter': 'blur(0px)'  }
   ]" class="api-side-bar">
 
     <button class="exit-side-bar-button">
@@ -80,9 +80,13 @@ function updateSideBar() {
       </ul>
     </li>
   </ul>
-  <div class="api-container">
+  <div class="api-container" :style="[
+    !displaySideBar
+      ? { 'filter': 'blur(0px)' }
+      : { 'filter': 'blur(3px)' }
+  ]">
     <div class="fields-area">
-      <h1 class="green">Api Requester</h1>
+      <h1 class="green-h1">Api Requester</h1>
       <div class="fields">
         <div class="url-field">
           <select v-model="formsData.method" class="method-select">
@@ -141,6 +145,13 @@ textarea {
   resize: none;
 }
 
+.green-h1{
+  color:#00bd7e;
+  @media (max-width: 280px){
+    font-size: 14.8vw;
+  }
+}
+
 .api-side-bar {
   background-color: #008b5d;
   position: absolute;
@@ -182,6 +193,7 @@ textarea {
   color: #f8f8f8;
   padding: 0px 11px;
   cursor: default;
+  margin-top: 10px;
 
   :first-child {
     cursor: pointer;
@@ -195,22 +207,33 @@ textarea {
   margin: 0 auto;
   max-width: 1280px;
   padding: 2rem;
+  transition: 0.4s filter ;
+  @media (max-width: 688px){
+    flex-direction: column;
+    height: 150vh;
+  }
 }
 
 .fields-area {
+  min-width: 120px;
   width: 45%;
+  @media (max-width: 688px){
+    width: 100%;
+  }
 }
 
 .api-data-textarea {
   width: 45%;
   margin-top: 2.5%;
   height: 100%;
+  @media (max-width: 688px){
+    width: 100%;
+  }
 }
 
 .url-field {
   display: flex;
   justify-content: space-between;
-
   >.method-select {
     width: 20%;
     height: 25px;
@@ -262,6 +285,7 @@ textarea {
 
 .window-button {
   width: 20%;
+  min-width: 60px;
   background-color: transparent;
   color: #C0C0C0;
   border: #666666 1px solid;
