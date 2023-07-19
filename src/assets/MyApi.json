@@ -4,6 +4,7 @@
       "requests":[
         {
           "name":"Register User",
+          "method":"post",
           "headers":[
             [
                 "Content-Type",
@@ -11,20 +12,135 @@
             ]
           ],
           "params":"{ \"email\": \"\", \"password\": \"\" }",
-          "url":"https://carpacho.onrender.com/auth/register",
-          "method":"post"
+          "url":"https://carpacho.onrender.com/auth/register"
         },
         {
             "name":"Login User",
+            "method":"post",
             "headers":[
               [
                   "Content-Type",
                   "application/json"
+              ],
+              [
+                "authorization",
+                "bearer Token_From_Login_Here"
               ]
             ],
             "params":"{\"email\":\"\", \"password\":\"\"}",
-            "url":"https://carpacho.onrender.com/auth/login",
-            "method":"post"
+            "url":"https://carpacho.onrender.com/auth/login"
+        },
+        {
+            "name":"Create Category",
+            "method":"post",
+            "headers":[
+              [
+                  "Content-Type",
+                  "application/json"
+              ],
+              [
+                "authorization",
+                "bearer Token_From_Login_Here"
+              ]
+            ],
+            "params":"{\"name\":\"\", \"parent\":\"[\"Parent_Category_id\"]\"}",
+            "url":"https://carpacho.onrender.com/category"
+        },
+        {
+            "name":"Get all Categories",
+            "method":"get",
+            "headers":[
+              [
+                  "Content-Type",
+                  "application/json"
+              ],
+              [
+                "authorization",
+                "bearer Token_From_Login_Here"
+              ]
+            ],
+            "params":"{}",
+            "url":"https://carpacho.onrender.com/category"
+        },
+        {
+            "name":"Create Product",
+            "method":"post",
+            "headers":[
+              [
+                  "Content-Type",
+                  "application/json"
+              ],
+              [
+                "authorization",
+                "bearer Token_From_Login_Here"
+              ]
+            ],
+            "params":"{\"name\":\"\",\"categories\":[\"Parent_Category_id\"],\"qty\":0,\"price\":0}",
+            "url":"https://carpacho.onrender.com/product"
+        },
+        {
+            "name":"Get Product",
+            "method":"get",
+            "headers":[
+              [
+                  "Content-Type",
+                  "application/json"
+              ],
+              [
+                "authorization",
+                "bearer Token_From_Login_Here"
+              ]
+            ],
+            "params":"{}",
+            "url":"https://carpacho.onrender.com/product?id="
+        },
+        {
+            "name":"Get All Products",
+            "method":"get",
+            "headers":[
+              [
+                  "Content-Type",
+                  "application/json"
+              ],
+              [
+                "authorization",
+                "bearer Token_From_Login_Here"
+              ]
+            ],
+            "params":"{}",
+            "url":"https://carpacho.onrender.com/product"
+        },
+        {
+            "name":"Update Product",
+            "method":"patch",
+            "headers":[
+              [
+                  "Content-Type",
+                  "application/json"
+              ],
+              [
+                "authorization",
+                "bearer Token_From_Login_Here"
+              ]
+            ],
+            "params":"{\"name\":\"\",\"categories\":[\"Parent_Category_id\"],\"qty\":0,\"price\":0}",
+            "url":"https://carpacho.onrender.com/product?id="
+        },
+        {
+            "name":"Delete Product",
+            "method":"delete",
+            "headers":[
+              [
+                  "Content-Type",
+                  "application/json"
+              ],
+              [
+                "authorization",
+                "bearer Token_From_Login_Here"
+              ]
+            ],
+            "params":"{}",
+            "url":"https://carpacho.onrender.com/product?id="
         }
       ]
    }

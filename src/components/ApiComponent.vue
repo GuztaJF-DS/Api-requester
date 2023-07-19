@@ -56,6 +56,23 @@ function updateSideBar() {
   displaySideBar.value = true;
   ulList.value.focus();
 }
+
+function getColor(method:string){
+  switch(method){
+    case 'get':
+      return 'color: #a903fc';
+    case 'post':
+      return 'color: #23db02';
+    case 'put':
+      return 'color: #e6d200';
+    case 'patch':
+      return 'color: #e68200';
+    case 'delete':
+      return 'color: #db0d4e';
+    default:
+      return 'color: #f8f8f8';
+  }
+}
 </script>
 
 <template>
@@ -73,11 +90,9 @@ function updateSideBar() {
     </button>
     <li class="li-side-bar" v-for="(item, index) in myApiOptions" :key="index">
       {{ item.name }}
-      <ul>
-        <li v-for="(subitem, subindex) in item.requests" :key="subindex" @click="setApiProps(subitem)">
-          {{ subitem.name }}
-        </li>
-      </ul>
+        <div class="div-side-bar" v-for="(subitem, subindex) in item.requests" :key="subindex" @click="setApiProps(subitem)">
+          <div :style="getColor(subitem.method)">{{ subitem.method }}</div> {{ subitem.name }}
+        </div>
     </li>
   </ul>
   <div class="api-container" :style="[
@@ -194,9 +209,22 @@ textarea {
   padding: 0px 11px;
   cursor: default;
   margin-top: 10px;
+    text-shadow: 
+    -1px -1px 5px #181818, 
+    -1px 1px 5px #181818,                    
+    1px -1px 5px #181818,                  
+    1px 0px 5px #181818;
 
   :first-child {
     cursor: pointer;
+  }
+}
+
+.div-side-bar{
+  display:flex;
+  flex-direction: row;
+  :first-child{
+    width: 48px;
   }
 }
 
