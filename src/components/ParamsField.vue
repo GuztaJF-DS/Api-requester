@@ -40,7 +40,7 @@ function insertTab(event: KeyboardEvent): void {
       <textarea 
         v-bind:value="params"
         v-on:input="updateHeader(($event.target as HTMLInputElement)?.value)"
-        placeholder="Header"
+        placeholder="Params"
         class="params-textarea"
         @keydown.tab.prevent="insertTab"
       >

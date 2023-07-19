@@ -1,21 +1,23 @@
 <script async setup lang="ts">
 import axios from 'axios';
-import { ref } from 'vue';
+import type { AxiosError } from 'axios';
+import { ref, onMounted } from 'vue';
 import type { Ref } from 'vue'
+import MyApi from '../assets/MyApi.json';
 import HeaderField from './HeaderField.vue';
 import ParamsField from './ParamsField.vue';
 
 interface IFormsData {
   url: string;
   method: string;
-  header: string[][];
+  headers: string[][];
   params: string;
 }
 
 const formsData: Ref<IFormsData> = ref({
   url: 'https://catfact.ninja/fact',
   method: 'get',
-  header: [['Content-Type', 'application/json']],
+  headers: [['Content-Type', 'application/json']],
   params: '{}'
 });
 const ErrorData = ref();
@@ -23,7 +25,7 @@ const apiData = ref();
 async function Request() {
   try {
     const headers: { [key: string]: string } = {};
-    formsData.value.header.forEach(([key, value]) => {
+    formsData.value.headers.forEach(([key, value]) => {
       headers[key] = value;
     });
     ErrorData.value = '';
@@ -36,40 +38,47 @@ async function Request() {
     const res = await axios(requestParams);
     apiData.value = JSON.stringify(res.data, undefined, 4);
   }
-  catch (e) {
-    console.error(e)
-    ErrorData.value = e;
+  catch (e: AxiosError | any) {
+    console.error(e?.response?.data?.message)
+    ErrorData.value = e?.response?.data?.message || e;
   }
 }
-
-// watch(formsData.value, ({header}) => {
-//   console.log('header', header)
-// })
 const windowValue = ref(false);
 const displaySideBar = ref(true);
-const myApiOptions = [{name:'item1'}, {name:'item2'}];
+const ulList = ref();
+const myApiOptions = MyApi;
+
+function setApiProps(selectedItem: any) {
+  formsData.value = selectedItem
+}
+
+function updateSideBar() {
+  displaySideBar.value = true;
+  ulList.value.focus();
+}
 </script>
 
 <template>
-  <button class="display-button" @click = "displaySideBar = !displaySideBar">
-    My APIs {{ displaySideBar ? '<':'>' }}
+  <button class="display-button" @click="updateSideBar();">
+    My API
   </button>
-  <ul 
-    :style="[
-      !displaySideBar 
-      ? { 'width': '0%', 'padding': '0px', 'padding-top' : '25px' }
-      : { 'width': '220px', 'padding': '11px', 'padding-top': '25px' }
-    ]"
-    class="api-side-bar"
-  >
-  <li 
-    v-for="(item, index) in myApiOptions"
-    :key="index"
-    @click="console.log('item.name')"
+  <ul ref="ulList" @blur="displaySideBar = false" tabindex="0" :style="[
+    !displaySideBar
+      ? { 'width': '0%' }
+      : { 'width': '220px' }
+  ]" class="api-side-bar">
 
-  >
-    {{ item.name }}
-  </li>
+    <button class="exit-side-bar-button">
+      Close
+    </button>
+    <li class="li-side-bar" v-for="(item, index) in myApiOptions" :key="index">
+      {{ item.name }}
+      <ul>
+        <li v-for="(subitem, subindex) in item.requests" :key="subindex" @click="setApiProps(subitem)">
+          {{ subitem.name }}
+        </li>
+      </ul>
+    </li>
   </ul>
   <div class="api-container">
     <div class="fields-area">
@@ -99,7 +108,7 @@ const myApiOptions = [{name:'item1'}, {name:'item2'}];
         </div>
         <div class="window-div">
           <div v-if="windowValue">
-            <HeaderField v-bind:header="formsData.header" v-on:update:value="formsData.header = $event" />
+            <HeaderField v-bind:header="formsData.headers" v-on:update:value="formsData.headers = $event" />
           </div>
           <div v-else>
             <ParamsField v-bind:params="formsData.params" v-on:update:value=" formsData.params = $event" />
@@ -132,24 +141,51 @@ textarea {
   resize: none;
 }
 
-.api-side-bar{
+.api-side-bar {
   background-color: #008b5d;
   position: absolute;
   overflow: hidden;
   height: 100vh;
+  white-space: nowrap;
   z-index: 5;
   transition: 0.4s width;
   margin: 0;
+  padding: 0;
+  padding-top: 2px !important;
 }
 
-.display-button{
+.display-button {
   position: absolute;
   background-color: transparent;
-  border:#008b5d 1px solid;
+  border: #008b5d 1px solid;
   border-radius: 5px;
-  color:white;
-  z-index: 6;
+  color: white;
+  z-index: 3;
+  height: 20px;
+  width: 74px;
   margin: 5px;
+}
+
+.exit-side-bar-button {
+  background-color: transparent;
+  border: white 1px solid;
+  border-radius: 5px;
+  color: white;
+  z-index: 3;
+  height: 20px;
+  width: 74px;
+  margin-left: 5px;
+  padding: 0px 19px;
+}
+
+.li-side-bar {
+  color: #f8f8f8;
+  padding: 0px 11px;
+  cursor: default;
+
+  :first-child {
+    cursor: pointer;
+  }
 }
 
 .api-container {

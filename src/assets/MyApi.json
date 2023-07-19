@@ -1,0 +1,31 @@
+[
+   {
+      "name":"Carpacho",
+      "requests":[
+        {
+          "name":"Register User",
+          "headers":[
+            [
+                "Content-Type",
+                "application/json"
+            ]
+          ],
+          "params":"{ \"email\": \"\", \"password\": \"\" }",
+          "url":"https://carpacho.onrender.com/auth/register",
+          "method":"post"
+        },
+        {
+            "name":"Login User",
+            "headers":[
+              [
+                  "Content-Type",
+                  "application/json"
+              ]
+            ],
+            "params":"{\"email\":\"\", \"password\":\"\"}",
+            "url":"https://carpacho.onrender.com/auth/login",
+            "method":"post"
+        }
+      ]
+   }
+]
