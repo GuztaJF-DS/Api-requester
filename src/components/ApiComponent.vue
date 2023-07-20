@@ -175,6 +175,10 @@ textarea {
   white-space: nowrap;
   z-index: 5;
   transition: 0.4s width;
+  *{
+    transition: none;
+
+  }
   margin: 0;
   padding: 0;
   padding-top: 2px !important;
@@ -215,7 +219,7 @@ textarea {
     1px -1px 5px #181818,                  
     1px 0px 5px #181818;
 
-  :first-child {
+  * {
     cursor: pointer;
   }
 }
