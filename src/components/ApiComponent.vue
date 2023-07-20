@@ -1,7 +1,6 @@
 <script async setup lang="ts">
 import axios from 'axios';
-import type { AxiosError } from 'axios';
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import type { Ref } from 'vue'
 import MyApi from '../assets/MyApi.json';
 import HeaderField from './HeaderField.vue';
@@ -38,7 +37,7 @@ async function Request() {
     const res = await axios(requestParams);
     apiData.value = JSON.stringify(res.data, undefined, 4);
   }
-  catch (e: AxiosError | any) {
+  catch (e: import("axios").AxiosError | any) {
     console.error(e?.response?.data?.message)
     ErrorData.value = e?.response?.data?.message || e;
   }
@@ -175,10 +174,6 @@ textarea {
   white-space: nowrap;
   z-index: 5;
   transition: 0.4s width;
-  *{
-    transition: none;
-
-  }
   margin: 0;
   padding: 0;
   padding-top: 2px !important;
